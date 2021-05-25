@@ -17,7 +17,8 @@ namespace AddressBookADO
             ///UC1 Creating a method for checking for the validity of the connection.
             //repository.EnsureDataBaseConnection();
             /// UC 3: Adds the new contact into DB table.
-            Console.WriteLine(repository.EditContactUsingName("Richa", "Sharma", "Speaker") ? "Update done successfully\n" : "Update failed");
+            //Console.WriteLine(repository.EditContactUsingName("Richa", "Sharma", "Speaker") ? "Update done successfully\n" : "Update failed");
+            Console.WriteLine(repository.DeleteContact("Richa", "Sharma") ? "Deleted Contact successfully\n" : "Update failed");
         }
         public static void AddNewContactDetails()
         {

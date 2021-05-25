@@ -132,7 +132,85 @@ namespace AddressBookADO
                 connection.Close();
             }
         }
+        ///  UC 4 Ability to Edit the contactType of the existing contact.
+
+        public bool EditContactUsingName(string FirstName, string LastName, string addressBookType)
+        {
+            /// Creates a new connection for every method to avoid "ConnectionString property not initialized" exception.
+            DBConnection dbc = new DBConnection();
+            connection = dbc.GetConnection();
+            try
+            {
+                using (connection)
+                {
+                    connection.Open();
+                    string query = @"update dbo.Address_Book set addressBookType = @parameter1
+                    where FirstName = @parameter2 and LastName = @parameter3";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@parameter1", addressBookType);
+                    command.Parameters.AddWithValue("@parameter2", FirstName);
+                    command.Parameters.AddWithValue("@parameter3", LastName);
+                    var result = command.ExecuteNonQuery();
+                    connection.Close();
+                    if (result > 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            /// Catching any type of exception generated during the run time 
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        /// UC5 Ability to  Deletes the contact with given first name and last name.
+        /// </summary>
+        /// <returns></returns>
+        public bool DeleteContact(string FirstName, string LastName)
+        {
+            ///Create a new conection for every method to avoid "ConnectionString property not initialized" exception.
+            DBConnection dbc = new DBConnection();
+            connection = dbc.GetConnection();
+            try
+            {
+                using (connection)
+                {
+                    connection.Open();
+                    string query = "delete from dbo.Address_Book where FirstName = @parameter1 and LastName =@parameter2";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    /// Binding the parameter to the formal parameters
+                    command.Parameters.AddWithValue("@parameter1", FirstName);
+                    command.Parameters.AddWithValue("@parameter2", LastName);
+                    /// Storing the result of the executed query
+                    var result = command.ExecuteNonQuery();
+                    connection.Close();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            /// Catching any type of exception generated during the run time
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 }
+
+
 
 
